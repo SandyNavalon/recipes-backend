@@ -8,6 +8,8 @@ dotenv.config();
 const PORT = process.env.PORT;
 const app = express();
 
+const RecipesRoutes = require('./routes/recipes.routes')
+
 connectDb();
 
 //transform data posted to json - limit 5MB
@@ -19,6 +21,8 @@ app.use(express.urlencoded({
     extended: true,
     limit: '5mb'
 }));
+
+app.use('/recipes', RecipesRoutes)
 
 //control route 404
 app.use('*', (req, res, next) => {
