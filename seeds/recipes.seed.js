@@ -9,7 +9,19 @@ console.log(urlDB);
 const recipes = [
     {
         title: 'Muffins de avena y chocolate',
-
+        type: 'dessert',
+        category: 'american',
+        ingredients: ['cacao', 'harina de avena', 'azúcar de coco', 'levadura', 'huevo', 'leche', 'nueces', 'aceite'],
+        description:'lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum',
+        img:'https://a.storyblok.com/f/120479/305ae468ee/muffins-de-chocolate-1.jpg'
+    },
+    {
+        title: 'Risotto',
+        type: 'lunch',
+        category: 'italian',
+        ingredients: ['arroz', 'setas', 'vino', 'cebolla', 'esparrago', 'queso', 'trufa', 'caldo'],
+        description:'lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum',
+        img:'https://www.palancares.com/wp-content/uploads/2020/09/RISOTTO-DE-SETAS.jpg'
     }
 ];
 
