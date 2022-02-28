@@ -29,7 +29,7 @@ app.use(cors({
     credentials: true,
 }));
 
-
+const {isAuth} = require('./middleware/auth.middleware')
 //transform data posted to json - limit 5MB
 app.use(express.json ({
     limit:'5mb'
@@ -40,7 +40,7 @@ app.use(express.urlencoded({
     limit: '5mb'
 }));
 
-app.use('/recipes', RecipesRoutes)
+app.use('/recipes', [isAuth], RecipesRoutes)
 app.use('/user', UserRoutes)
 
 //control route 404
