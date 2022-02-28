@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 
 const {connectDb} = require('./utils/db/db');
+const cors = require('cors')
 
 dotenv.config();
 
@@ -9,8 +10,25 @@ const PORT = process.env.PORT;
 const app = express();
 
 const RecipesRoutes = require('./routes/recipes.routes')
+const UserRoutes = require('./routes/user.routes')
 
 connectDb();
+
+//parametros de configuración 
+//esto son lentejas. 
+app.use((req,res,next)=>{
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, PATCH');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Methods', 'Content-Type');
+    next();
+})
+
+//esto del cors es una movida para evitar fallos pero tampoco sabemos mu bien lo que es
+app.use(cors({
+    origin: ['http://localhost:4000', 'http://localhost:4200'],
+    credentials: true,
+}));
+
 
 //transform data posted to json - limit 5MB
 app.use(express.json ({
@@ -23,6 +41,7 @@ app.use(express.urlencoded({
 }));
 
 app.use('/recipes', RecipesRoutes)
+app.use('/user', UserRoutes)
 
 //control route 404
 app.use('*', (req, res, next) => {
