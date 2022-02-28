@@ -43,8 +43,39 @@ const postRecipe = async (req, res, next) => {
     }
 }
 
+const deleteRecipe = async(req, res, next) => {
+    try{
+        const {id} = req.params
+        const recipeDeleted = await Recipe.findByIdAndDelete(id)
+
+        if(!recipeDeleted) return next(setError(404, 'Recipe does not exist'))
+        return res.status(200).json(recipeDeleted)
+
+    } catch(err){
+        return next (error)
+    }
+}
+
+
+const patchRecipe = async (req, res, next) => {
+    try{
+
+            const {id}=req.params
+            const patchRecipe = new Recipe(req.body)
+            patchRecipe._id = id
+
+            const updateRecipe = await Recipe.findByIdAndUpdate(id, patchRecipe)
+            if(!updateRecipe) return next(setError(404, 'Receta no existe'))
+            return res.status(200).json(updateRecipe)
+    }catch(error){
+       return next(error) 
+    }
+}
+
 module.exports = {
     getAllRecipes,
     getRecipe,
-    postRecipe
+    postRecipe,
+    deleteRecipe,
+    patchRecipe
 };
