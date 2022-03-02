@@ -27,8 +27,8 @@ const registerStrategy = new LocalStrategy(
                 email: email,
                 password: hash,
                 user: req.body.user,
+            })
 
-            });
             const savedUser = await newUser.save();
             return done(null, savedUser);
 

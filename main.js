@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 
 const passport = require('passport');
-require('./authentication/index');
+require('./authentication/index.strategy');
 
 
 const {connectDb} = require('./utils/db/db');
