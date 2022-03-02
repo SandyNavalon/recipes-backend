@@ -42,7 +42,7 @@ const getAllUsers = async (req, res, next) => {
 const loginUser = async (req, res, next) => {
     try {
         //console.log('alias-->',req.body.alias)
-        const userInBd = await User.findOne({ alias: req.body.alias })
+        const userInBd = await User.findOne({ user: req.body.user })
          //console.log('usuario encontrado-->',userInBd)
 
         if (!userInBd) {
@@ -53,7 +53,7 @@ const loginUser = async (req, res, next) => {
             userInBd.password = null
              console.log('constraseña correcta')
 
-            const token = JwtUtils.generate(userInBd._id, userInBd.alias)
+            const token = JwtUtils.generate(userInBd._id, userInBd.user)
             //const token = jwt.sign({ id: userInBd._id, alias: userInBd.alias }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
             return res.status(200).json(token)
@@ -66,8 +66,14 @@ const loginUser = async (req, res, next) => {
 
 }
 
+const logoutUser = async (req, res, next) => {
+    res.cookie('jwt', '', {maxAge: 1});
+    res.redirect('/');
+}
+
 module.exports = {
     postNewUser,
     loginUser,
-    getAllUsers
+    getAllUsers,
+    logoutUser
 }
