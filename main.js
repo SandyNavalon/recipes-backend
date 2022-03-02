@@ -1,6 +1,10 @@
 const express = require('express');
 const dotenv = require('dotenv');
 
+const passport = require('passport');
+require('./authentication/index');
+
+
 const {connectDb} = require('./utils/db/db');
 
 dotenv.config();
@@ -8,7 +12,10 @@ dotenv.config();
 const PORT = process.env.PORT;
 const app = express();
 
-const RecipesRoutes = require('./routes/recipes.routes')
+app.use(passport.initialize());
+
+const RecipesRoutes = require('./routes/recipes.routes');
+const UserRouter = require('./routes/user.routes');
 
 connectDb();
 
@@ -22,7 +29,8 @@ app.use(express.urlencoded({
     limit: '5mb'
 }));
 
-app.use('/recipes', RecipesRoutes)
+app.use('/recipes', RecipesRoutes);
+app.use('/user', UserRouter);
 
 //control route 404
 app.use('*', (req, res, next) => {
