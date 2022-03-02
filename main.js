@@ -13,12 +13,11 @@ const RecipesRoutes = require('./routes/recipes.routes')
 const passport = require('passport');
 
 
-require('./authentication/passport'); // Requerimos nuestro archivo de configuración
+require('./authentication/index.strategy'); // Requerimos nuestro archivo de configuración
 
 connectDb();
 
-// Añadimos el nuevo middleware al servidor
-app.use(passport.initialize())
+
 
 
 //transform data posted to json - limit 5MB
@@ -30,6 +29,9 @@ app.use(express.urlencoded({
     extended: true,
     limit: '5mb'
 }));
+
+// Ainicializamos passport
+app.use(passport.initialize())
 
 app.use('/recipes', RecipesRoutes)
 app.use('/user', userRouter);
