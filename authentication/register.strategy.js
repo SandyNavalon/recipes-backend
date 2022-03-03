@@ -36,7 +36,6 @@ const registerStrategy = new LocalStrategy(
                 return done(error);
             }
 
-
             const isValidEmail = validateEmail(email);
             if (!isValidEmail) {
             const error = new Error('Wrong email, don\'t\ fuck me!');

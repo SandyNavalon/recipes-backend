@@ -22,4 +22,21 @@ router.post('/register', (req, res, next) => {
     }
 });
 
+router.post('/login', (req, res, next) => {
+    try{
+        const done = (error, existingUser) => {
+            if(error) {
+                return next(error);
+            }
+            // req.logIn();
+            return res.status(200).json(existingUser);
+        }
+
+        passport.authenticate('login', done)(req);
+
+    } catch(error){
+        return done(error);
+    }
+})
+
 module.exports= router;
