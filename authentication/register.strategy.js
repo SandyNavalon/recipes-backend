@@ -33,9 +33,33 @@ const registerStrategy = new LocalStrategy({
             email: email
         });
         try {
+
+            //validation password
+            const {
+                user,
+                passwordVerification
+            } = req.body;
+
+            const isSamePassword = password === passwordVerification;
+
+            if (!isSamePassword || !passwordVerification) {
+                const error = new Error('Las contraseñas no coinciden');
+                return done(error);
+            }
+
+
+            //validation email.
+
             const isValidEmail = validateEmail(email);
             if (!isValidEmail) {
                 const error = new Error('Email inválido, no me hagas trampas!');
+                return done(error);
+            }
+
+
+            const isValidPassword = validatePassword(password);
+            if (!isValidPassword) {
+                const error = new Error('La contraseña tiene que contener de 6 a 16 carácteres, una mayúscula, minúscula y número');
                 return done(error);
             }
 
@@ -51,7 +75,7 @@ const registerStrategy = new LocalStrategy({
             const newUser = new User({
                 email: email,
                 password: hash,
-                user: req.body.user,
+                user: user,
             })
 
             const savedUser = await newUser.save();
