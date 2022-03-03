@@ -3,83 +3,61 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user.model');
 const bcrypt = require("bcrypt");
 
-// passport.use(
-//     'register', // Nombre de la estrategia, en este caso será register
-//     new LocalStrategy({
-//             //usernameField: 'name',
-//             emailField: 'email', // Elegimos el campo email del req.body
-//             passwordField: 'password', // Elegimos el campo password del req.body
-//             passReqToCallback: true, // Hace que el callback reciba la Request (req)
-//         },
-//         async (req, email, password,  done) => {
-//             try {
-//                 // Primero buscamos si el usuario existe en nuestra DB
-//                 const previousUser = await User.findOne({
-//                     email: email
-//                 });
+//validaciones
+const validateEmail = (email) => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([ñA-Za-z\-0-9]+\.)+[ña-zA-Z]{2,}))$/;
 
-//                 // Si hay usuario previamente, lanzamos un error
-//                 if (previousUser) {
-//                     const error = new Error('The user is already registered!');
-//                     return done(error);
-//                 }
+    return re.test(String(email).toLowerCase());
+};
 
-//                 // Si no existe el usuario, vamos a "hashear" el password antes de registrarlo
-//                 const saltRounds = 10;
-//                 const pwdHash = await bcrypt.hash(password, saltRounds);
+const validatePassword = (password) => {
+    //de 6 a 10 caracteres, mayus y minus, al menos un numero y al menos un character especial
+    const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 
-//                 // Creamos el nuevo user y lo guardamos en la DB
-//                 const newUser = new User({
-                  
-//                     email: email,
-//                     password: pwdHash, 
-//                     name: req.body.name,
-//                 });
-
-//                 const savedUser = await newUser.save();
-
-//                 // Invocamos el callback con null donde iría el error y el usuario creado
-//                 return done(null, savedUser);
-
-//             } catch (error) {
-//                 // Si hay un error, resolvemos el callback con el error
-//                 return done(error, null);
-//             }
-//         }
-//     )
-// );
+    return re.test(String(password));
+};
 
 
-const registerStrategy = new LocalStrategy(
-    {
+
+
+// Estrategia de registro
+const registerStrategy = new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password',
         passReqToCallback: true,
     },
 
     async (req, email, password, done) => {
-        
-        const existingUser = await User.findOne({email:email});
-        try{
-            if(existingUser){
+
+        const existingUser = await User.findOne({
+            email: email
+        });
+        try {
+            const isValidEmail = validateEmail(email);
+            if (!isValidEmail) {
+                const error = new Error('Email inválido, no me hagas trampas!');
+                return done(error);
+            }
+
+
+            if (existingUser) {
                 const error = new Error('este usuario me suena');
                 return done(error);
             }
 
-            const saltRounds =10;
+            const saltRounds = 10;
             const hash = await bcrypt.hash(password, saltRounds);
 
-            const newUser = new User ({
-               email: email,
-               password: hash,
-               user: req.body.user, 
+            const newUser = new User({
+                email: email,
+                password: hash,
+                user: req.body.user,
             })
 
             const savedUser = await newUser.save();
             return done(null, savedUser);
-        }
-        catch(error){
-done(error, null)
+        } catch (error) {
+            done(error, null)
         }
 
     }
