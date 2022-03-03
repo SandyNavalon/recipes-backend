@@ -1,7 +1,7 @@
 const passport = require('passport');
 const User = require('../models/user.model');
 const registerStrategy = require('./register.strategy');
-//const loginStrategy = require('./login.strategy');
+const loginStrategy = require('./login.strategy');
 /**
  * Serializer
  * Deserializer
@@ -21,5 +21,5 @@ passport.deserializeUser(async (userId, done) => {
     }
 });
 
-//passport.use("logincito", loginStrategy);
+passport.use("login", loginStrategy);
 passport.use("register", registerStrategy);
