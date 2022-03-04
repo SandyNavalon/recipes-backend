@@ -12,11 +12,11 @@ router.post('/register', (req, res, next) => {
             if(error) {
                 return next(error);
             }
-            req.logIn(user, (error) => {
+            req.logIn(savedUser, (error) => {
                 if (error) return next(error);
 
                 return res.status(201).json(savedUser);
-        
+
             });
 
         };
