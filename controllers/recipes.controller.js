@@ -30,13 +30,17 @@ const getRecipe = async (req, res, next) => {
 
 const postRecipe = async (req, res, next) => {
     try{
-        const newRecipe = new Recipe(req.body);
-        // newRecipe.title = req.body.title
-        // newRecipe.type = req.body.type
-        // newRecipe.category = req.body.category
-        // newRecipe.ingredients = req.body.ingredients
-        // newRecipe.description = req.body.description
-        // newRecipe.img = req.body.img
+console.log('req.file', req.file);
+
+        const recipeImg = req.file ? req.file.filename: null;
+
+        const newRecipe = new Recipe();
+        newRecipe.title = req.body.title
+        newRecipe.type = req.body.type
+        newRecipe.category = req.body.category
+        newRecipe.ingredients = req.body.ingredients
+        newRecipe.description = req.body.description
+        newRecipe.img = recipeImg
 
         const recipeInDB = await newRecipe.save()
         return res.status(201).json(recipeInDB)
