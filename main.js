@@ -2,18 +2,45 @@ const express = require('express');
 const dotenv = require('dotenv');
 
 const {connectDb} = require('./utils/db/db');
+const DB_URL = process.env.MONGO_DB_URL;
 
 dotenv.config();
 
 const PORT = process.env.PORT;
 const app = express();
 
+
+
 const userRouter = require('./routes/user.routes');
 const RecipesRoutes = require('./routes/recipes.routes')
 const passport = require('passport');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const { ServerApiVersion } = require('mongoose/node_modules/mongodb');
 
 
 require('./authentication/index.strategy'); // Requerimos nuestro archivo de configuración
+
+//usamos session. Configuramos sesion.
+//Es la cookie de sesion que se quedara activa el tiempo que le digamos
+//esta cookie la hemos obtenido del id en el serializer en index.strategy.js
+app.use(
+    session({
+        secret:  process.env.SECRET_SESSION,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            maxAge: 24*60*60*1000,
+        },
+
+        store: MongoStore.create({ mongoUrl: DB_URL })
+    })
+)
+
+// Ainicializamos passport
+app.use(passport.initialize())
+//para que passport trabaje con sesiones
+app.use(passport.session())
 
 connectDb();
 
@@ -30,8 +57,7 @@ app.use(express.urlencoded({
     limit: '5mb'
 }));
 
-// Ainicializamos passport
-app.use(passport.initialize())
+
 
 app.use('/recipes', RecipesRoutes)
 app.use('/user', userRouter);

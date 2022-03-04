@@ -8,10 +8,14 @@ const loginStrategy = require('./login.strategy');
  * passport.use -> registro
  * passport.use -> login
  */
+
+//asocia id de usuario a una cookie de sesion
 passport.serializeUser((user, done) => {
     return done(null, user._id);
 });
 
+//el deserializador te coge la cookie y mira qué usuario es el que la tenia colgada
+//y te ofrece los datos del usuario que iban asociados a dicha cookie.
 passport.deserializeUser(async (userId, done) => {
     try {
         const existingUser = await User.findById(userId);

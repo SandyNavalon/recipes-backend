@@ -3,6 +3,9 @@ const {setError} = require('../config/errors/error');
 
 const getAllRecipes = async (req, res, next) => {
     try {
+        //con este req.user te rescata en terminal el usuario que esté logueado
+        //en ese momento
+        console.log('req.user', req.user);
         const allRecipes = await Recipe.find();
         return res.status(200).json(allRecipes);
     } catch(error) {
