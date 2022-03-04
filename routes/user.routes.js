@@ -28,7 +28,10 @@ router.post('/login', (req, res, next) => {
             if(error) {
                 return next(error);
             }
-            // req.logIn();
+            req.logIn(existingUser, (error) => {
+                if(error) return next (error);
+            });
+
             return res.status(200).json(existingUser);
         }
 

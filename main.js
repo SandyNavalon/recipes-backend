@@ -1,18 +1,35 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 const passport = require('passport');
 require('./authentication/index.strategy');
 
 
 const {connectDb} = require('./utils/db/db');
+const DB_URL =  process.env.MONGO_DB_URL;
 
 dotenv.config();
 
 const PORT = process.env.PORT;
 const app = express();
 
+app.use(
+    session(
+        {
+            secret: process.env.SESSION_SECRET,
+            resave: false,
+            saveUninitialized: false,
+            cookie: {
+                maxAge: 10 * 24 * 60 * 60 * 1000,
+            },
+            store: MongoStore.create({ mongoUrl: DB_URL })
+    })
+);
+
 app.use(passport.initialize());
+app.use(passport.session());
 
 const RecipesRoutes = require('./routes/recipes.routes');
 const UserRouter = require('./routes/user.routes');
