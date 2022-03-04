@@ -12,7 +12,12 @@ router.post('/register', (req, res, next) => {
             if(error) {
                 return next(error);
             }
-            return res.status(201).json(savedUser);
+
+            req.logIn(savedUser, (error) => {
+                if(error) return next (error);
+
+                return res.status(201).json(savedUser);
+            });
         }
 
         passport.authenticate('register', done)(req);
@@ -30,9 +35,9 @@ router.post('/login', (req, res, next) => {
             }
             req.logIn(existingUser, (error) => {
                 if(error) return next (error);
-            });
 
-            return res.status(200).json(existingUser);
+                return res.status(200).json(existingUser);
+            });
         }
 
         passport.authenticate('login', done)(req);
@@ -41,5 +46,20 @@ router.post('/login', (req, res, next) => {
         return done(error);
     }
 })
+
+router.post('/logout', (req, res, next) => {
+    if (req.user) {
+      // Destruimos el objeto req.user para este usuario
+        req.logout();
+
+        req.session.destroy(() => {
+            // Eliminamos la cookie de sesión al cancelar la sesión
+            res.clearCookie('connect.sid');
+            return res.status(200).json('Bye bye!');
+        });
+    } else {
+      return res.sendStatus(304); // Si no hay usuario, no habremos cambiado nada
+    }
+});
 
 module.exports= router;

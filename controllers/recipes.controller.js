@@ -3,6 +3,8 @@ const {setError} = require('../config/errors/error');
 
 const getAllRecipes = async (req, res, next) => {
     try {
+        console.log('req.user', req.user);
+
         const allRecipes = await Recipe.find();
         return res.status(200).json(allRecipes);
     } catch(error) {
@@ -12,6 +14,8 @@ const getAllRecipes = async (req, res, next) => {
 
 const getRecipe = async (req, res, next) => {
     try {
+        console.log('req.user', req.user);
+
         const {id} = req.params;
         const recipe = await Recipe.findById(id)
 
