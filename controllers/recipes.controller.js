@@ -30,7 +30,7 @@ const getRecipe = async (req, res, next) => {
 
 const postRecipe = async (req, res, next) => {
     try{
-console.log('req.photoFromCloudinary', req.photoFromCloudinary);
+        console.log('req.photoFromCloudinary', req.photoFromCloudinary);
 
         const recipeImg = req.photoFromCloudinary ? req.photoFromCloudinary : null;
 
