@@ -1,4 +1,5 @@
 const Recipe = require("../models/recipes.model");
+const User = require ("../models/user.model");
 const {setError} = require('../config/errors/error');
 
 const getAllRecipes = async (req, res, next) => {
@@ -30,25 +31,35 @@ const getRecipe = async (req, res, next) => {
 
 const postRecipe = async (req, res, next) => {
     try{
-        console.log('req.photoFromCloudinary', req.photoFromCloudinary);
+        console.log('imgfromcloudinary', req.recipeImgFromCloudinary);
 
-        const recipeImg = req.photoFromCloudinary ? req.photoFromCloudinary : null;
+        const { title, type, category, ingredients, description, userId } = req.body;
 
-        const newRecipe = new Recipe();
-        newRecipe.title = req.body.title
-        newRecipe.type = req.body.type
-        newRecipe.category = req.body.category
-        newRecipe.ingredients = req.body.ingredients
-        newRecipe.description = req.body.description
-        newRecipe.img = recipeImg
+        const user = await User.findById(userId)
+
+        const recipeImg = req.recipeImgFromCloudinary ? req.recipeImgFromCloudinary : null;
+
+        const newRecipe = new Recipe({
+            title,
+            type,
+            category,
+            ingredients,
+            description,
+            userId: user._id,
+        })
+        newRecipe.img = recipeImg;
 
         const recipeInDB = await newRecipe.save()
+
+        user.recipes = user.recipes.concat(recipeInDB._id)
+        await user.save()
+
         return res.status(201).json(recipeInDB)
 
-    } catch(err) {
+    } catch(error) {
         return next(error);
     }
-}
+};
 
 const deleteRecipe = async(req, res, next) => {
     try{

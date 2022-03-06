@@ -67,6 +67,33 @@ router.post('/logout', (req, res, next) => {
     }
 });
 
+router.get('/', async (req, res, next) => {
+    try{
+        const users = await User.find({}).populate('recipes')
+        res.json(users);
+        
+    }catch(error){
+    return next(error)
+    }
+}
+)
 
+router.put('/add', async (req, res, next) => {
+    try {
+        const { recipeId} = req.body;
+        const { userId } = req.body;
+        
+        const updatedUser = await User.findByIdAndUpdate(
+            recipeId,
+            { $push: { users: userId } },
+            { new: true }
+        );
+
+        console.log('updatedUser->', updatedUser);
+        return res.status(200).json(updatedUser);
+    } catch (error) {
+        return next(error);
+    }
+});
 
 module.exports= router;

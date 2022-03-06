@@ -8,6 +8,7 @@ const userSchema = new Schema(
     password: { type: String, required: true },
     passwordVerification: {type: String},
     user: { type: String },
+    recipes: [{ type: mongoose.Types.ObjectId, ref: 'recipes' }],
     //lastName: { type: String, required: true }, 
     //phoneNumber:{ type: String, required: true },
     //....
