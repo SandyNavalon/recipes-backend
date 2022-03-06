@@ -1,3 +1,4 @@
+const { response } = require('express');
 const express = require ('express');
 const passport = require('passport');
 const User = require('../models/user.model');
@@ -61,5 +62,15 @@ router.post('/logout', (req, res, next) => {
       return res.sendStatus(304); // Si no hay usuario, no habremos cambiado nada
     }
 });
+
+router.get('/', async(req, res, next) => {
+    try{
+        const users = await User.find({}).populate('recipes')
+        res.json(users);
+
+    } catch(error){
+        return next(error)
+    }
+})
 
 module.exports= router;

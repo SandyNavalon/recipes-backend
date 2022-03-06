@@ -7,7 +7,9 @@ const userSchema = new Schema(
         email: { type: String, required: true },
         user: { type: String},
         password: { type: String, required: true },
-        passwordVerification: { type: String }
+        passwordVerification: { type: String },
+
+        recipes: [{type: mongoose.Types.ObjectId, ref: 'recipes'}],
     },
     {
         timestamps: true,

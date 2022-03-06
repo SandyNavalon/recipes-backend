@@ -1,5 +1,7 @@
-const Recipe = require("../models/recipes.model");
 const {setError} = require('../config/errors/error');
+
+const Recipe = require("../models/recipes.model");
+const User = require("../models/user.model");
 
 const getAllRecipes = async (req, res, next) => {
     try {
@@ -33,17 +35,27 @@ const postRecipe = async (req, res, next) => {
     try{
         console.log('req.file', req.recipeImgFromCloudinary);
 
+        const { title, type, category, ingredients, description, userId } = req.body;
+
+        const user = await User.findById(userId)
+
         const recipeImg = req.recipeImgFromCloudinary ? req.recipeImgFromCloudinary : null;
 
-        const newRecipe = new Recipe();
-            newRecipe.title = req.body.title,
-            newRecipe.type = req.body.type,
-            newRecipe.category = req.body.category,
-            newRecipe.ingredients = req.body.ingredients,
-            newRecipe.description = req.body.description,
-            newRecipe.img = recipeImg
+        const newRecipe = new Recipe({
+            title,
+            type,
+            category,
+            ingredients,
+            description,
+            userId: user._id,
+        })
+        newRecipe.img = recipeImg;
 
         const recipeInDB = await newRecipe.save()
+
+        user.recipes = user.recipes.concat(recipeInDB._id)
+        await user.save()
+
         return res.status(201).json(recipeInDB)
 
     } catch(error) {
