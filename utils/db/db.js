@@ -5,8 +5,6 @@ dotenv.config();
 const urlDB = process.env.MONGO_DB_URL;
 console.log(urlDB);
 
-
-
 const connectDb = async () => {
     try{
         const db = await mongoose.connect(urlDB, { useNewUrlParser: true, useUnifiedTopology: true } );
