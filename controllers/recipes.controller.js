@@ -33,11 +33,11 @@ const getRecipe = async (req, res, next) => {
 
 const postRecipe = async (req, res, next) => {
     try{
-        console.log('req.file', req.recipeImgFromCloudinary);
+        // console.log('req.file', req.recipeImgFromCloudinary);
 
         const { title, type, category, ingredients, description, userId } = req.body;
 
-        const user = await User.findById(userId)
+        const user = await User.findById(userId);
 
         const recipeImg = req.recipeImgFromCloudinary ? req.recipeImgFromCloudinary : null;
 
