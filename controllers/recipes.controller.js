@@ -31,7 +31,7 @@ const getRecipe = async (req, res, next) => {
 
 const postRecipe = async (req, res, next) => {
     try{
-        console.log('req.file', req.file);
+        console.log('req.file', req.recipeImgFromCloudinary);
 
         const recipeImg = req.recipeImgFromCloudinary ? req.recipeImgFromCloudinary : null;
 

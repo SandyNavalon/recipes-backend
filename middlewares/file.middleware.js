@@ -45,6 +45,8 @@ const upload = multer({
 
 const uploadToCloudinary = async (req, res, next) => {
     if (req.file) {
+
+        try{
         console.log('Subiendo a Cloudinary...');
 
         const filePath = req.file.path;
@@ -54,9 +56,14 @@ const uploadToCloudinary = async (req, res, next) => {
 
         req.recipeImgFromCloudinary = imageFromCloudinary.secure_url;
 
+        // Borramos el archivo local
         await fs.unlinkSync(filePath);
 
         return next();
+
+        } catch(error){
+            return next(error)
+        }
     } else {
         return next();
     }
