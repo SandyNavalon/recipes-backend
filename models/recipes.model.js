@@ -7,7 +7,8 @@ const recipeSchema = new mongoose.Schema(
         category: {type: String},
         ingredients: {type: Array},
         description: { type: String},
-        img:{type: String}
+        img:{type: String, default: "https://image.freepik.com/free-icon/heart-dish_318-49297.jpg"},
+        userId: [{type: mongoose.Types.ObjectId, ref: 'User'}],
 
     },
     {
