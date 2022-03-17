@@ -3,9 +3,13 @@ const fs = require('fs');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 
+cloudinary.config({
+    cloud_name: process.env.cloud_name,
+    api_key: process.env.api_key,
+    api_secret: process.env.api_secret
+})
 
-
-//  hemos instalado multer para poder  npm install --save multer
+//hemos instalado multer para poder  npm install --save multer
 //que sirve para subir archivos a la web. 
 
 
@@ -53,19 +57,24 @@ const upload = multer({
 ///SUBE LA IMAGEN A CLOUDINARY
 const uploadToCloudinary = async (req, res, next) => {
     if (req.file) {
-        console.log('Subiendo a Cloudinary...');
+
+        try{
+            console.log('Subiendo a Cloudinary...');
     
         const filePath = req.file.path;
         const imageFromCloudinary = await cloudinary.uploader.upload(filePath);
 
         console.log('Imagen subida con éxito', imageFromCloudinary);
 
-        req.photoFromCloudinary = imageFromCloudinary.secure_url;
+        req.recipeImgFromCloudinary = imageFromCloudinary.secure_url;
 
         //una vez subido el archivo lo borramos de filepath (public/uploads)
         await fs.unlinkSync(filePath);
         return next();
-        
+        }catch(error){
+            return next(error)
+        }
+
     } else {
         return next();
     }

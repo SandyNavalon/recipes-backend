@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
 
 const {connectDb} = require('./utils/db/db');
 const DB_URL = process.env.MONGO_DB_URL;
@@ -20,6 +21,11 @@ const { ServerApiVersion } = require('mongoose/node_modules/mongodb');
 
 
 require('./authentication/index.strategy'); // Requerimos nuestro archivo de configuración
+
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}))
 
 //usamos session. Configuramos sesion.
 //Es la cookie de sesion que se quedara activa el tiempo que le digamos
