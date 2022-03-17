@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/register', (req, res, next) => {
     // console.log('req.body', req.body);
-    // return res.status(200).json ('Endpoint/ register working');
+    // return res.status(200).json ('Endpoint/ register working')
     try{
         const done = (error, savedUser) => {
             if(error) {
@@ -26,6 +26,7 @@ router.post('/register', (req, res, next) => {
     } catch(error){
         console.log('ERROR!!', error);
     }
+
 });
 
 router.post('/login', (req, res, next) => {
@@ -71,6 +72,8 @@ router.get('/', async(req, res, next) => {
     } catch(error){
         return next(error)
     }
-})
+});
+
+
 
 module.exports= router;

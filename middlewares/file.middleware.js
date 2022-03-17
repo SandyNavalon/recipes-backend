@@ -10,16 +10,17 @@ cloudinary.config({
 })
 
 const storage = multer.diskStorage({
-    filename:(req, file, callback) => {
+        filename:(req, file, callback) => {
         callback(null, `${Date.now()}-${file.originalname}`);
     },
     destination: (req, file, callback) => {
-        const directory = path.join(__dirname, '../public/uploads/');//DARLE UNA VUELTA, ¿PUBLIC?
+        const directory = path.join(__dirname, '../public/uploads/');
         callback(null, directory);
     },
 });
 
 const ACCEPTED_FILE_EXTENSIONS = ['image/png', 'image/jpg', 'image/jpeg'];
+
 
 const fileFilter = (req, file, callback) => {
 
