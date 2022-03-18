@@ -1,10 +1,10 @@
-const passport = require ('passport');
-const bcrypt = require('bcrypt');
 
-const User = require('../models/user.model');
+const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const User = require('../models/user.model');
+const bcrypt = require("bcrypt");
 
-
+//validaciones
 const validateEmail = (email) => {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([ñA-Za-z\-0-9]+\.)+[ña-zA-Z]{2,}))$/;
 
@@ -12,55 +12,68 @@ const validateEmail = (email) => {
 };
 
 const validatePassword = (password) => {
+    //de 6 a 10 caracteres, mayus y minus, al menos un numero y al menos un character especial
     const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 
     return re.test(String(password));
 };
 
-const registerStrategy = new LocalStrategy(
-    {
-        usernameField:'email',
-        passwordField:'password',
-        passReqToCallback: true,
 
+
+
+// Estrategia de registro
+const registerStrategy = new LocalStrategy({
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true,
     },
+
     async (req, email, password, done) => {
 
-        try{
-            const {user, passwordVerification} = req.body;
+        const existingUser = await User.findOne({
+            email: email
+        });
+        try {
+
+            //validation password
+            const {
+                user,
+                passwordVerification
+            } = req.body;
 
             const isSamePassword = password === passwordVerification;
 
             if (!isSamePassword || !passwordVerification) {
-                const error = new Error('Passwords do not match');
+                const error = new Error('Las contraseñas no coinciden');
                 return done(error);
             }
+
+
+            //validation email.
 
             const isValidEmail = validateEmail(email);
             if (!isValidEmail) {
-            const error = new Error('Wrong email, don\'t\ fuck me!');
-
-            return done(error);
-            }
-
-            const isValidPassword = validatePassword(password);
-            if (!isValidPassword) {
-            const error = new Error('Password must have from 6 to 16 characters, an uppercase, lowercase and a number');
-
-            return done(error);
-            }
-
-
-            const existingUser = await User.findOne({email: email});
-            if(existingUser) {
-                const error = new Error('The user is already registered');
+                const error = new Error('Email inválido, no me hagas trampas!');
                 return done(error);
             }
 
-            const saltRound = 10;
-            const hash = await bcrypt.hash(password, saltRound);
 
-            const newUser = new User ({
+            const isValidPassword = validatePassword(password);
+            if (!isValidPassword) {
+                const error = new Error('La contraseña tiene que contener de 6 a 16 carácteres, una mayúscula, minúscula y número');
+                return done(error);
+            }
+
+
+            if (existingUser) {
+                const error = new Error('este usuario me suena');
+                return done(error);
+            }
+
+            const saltRounds = 10;
+            const hash = await bcrypt.hash(password, saltRounds);
+
+            const newUser = new User({
                 email: email,
                 password: hash,
                 user: user,
@@ -68,11 +81,11 @@ const registerStrategy = new LocalStrategy(
 
             const savedUser = await newUser.save();
             return done(null, savedUser);
-
-        }catch(error) {
+        } catch (error) {
             done(error, null)
         }
-    }
-);
 
-module.exports = registerStrategy;
+    }
+)
+
+module.exports = registerStrategy

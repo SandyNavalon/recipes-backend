@@ -1,14 +1,21 @@
 const passport = require('passport');
 const User = require('../models/user.model');
-
 const registerStrategy = require('./register.strategy');
 const loginStrategy = require('./login.strategy');
+/**
+ * Serializer
+ * Deserializer
+ * passport.use -> registro
+ * passport.use -> login
+ */
 
-//setCookie
+//asocia id de usuario a una cookie de sesion
 passport.serializeUser((user, done) => {
-    return done(null, user._id);//_id: modelo de mongoose
+    return done(null, user._id);
 });
 
+//el deserializador te coge la cookie y mira qué usuario es el que la tenia colgada
+//y te ofrece los datos del usuario que iban asociados a dicha cookie.
 passport.deserializeUser(async (userId, done) => {
     try {
         const existingUser = await User.findById(userId);
@@ -18,5 +25,5 @@ passport.deserializeUser(async (userId, done) => {
     }
 });
 
-passport.use('login', loginStrategy);
-passport.use('register', registerStrategy);
+passport.use("login", loginStrategy);
+passport.use("register", registerStrategy);
