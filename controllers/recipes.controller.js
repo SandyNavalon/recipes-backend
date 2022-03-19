@@ -1,12 +1,13 @@
-const Recipe = require("../models/recipes.model");
-const User = require ("../models/user.model");
+
 const {setError} = require('../config/errors/error');
+
+const Recipe = require("../models/recipes.model");
+const User = require("../models/user.model");
 
 const getAllRecipes = async (req, res, next) => {
     try {
-        //con este req.user te rescata en terminal el usuario que esté logueado
-        //en ese momento
         console.log('req.user', req.user);
+
         const allRecipes = await Recipe.find();
         return res.status(200).json(allRecipes);
     } catch(error) {
@@ -16,6 +17,8 @@ const getAllRecipes = async (req, res, next) => {
 
 const getRecipe = async (req, res, next) => {
     try {
+        console.log('req.user', req.user);
+
         const {id} = req.params;
         const recipe = await Recipe.findById(id)
 
@@ -32,6 +35,7 @@ const getRecipe = async (req, res, next) => {
 const postRecipe = async (req, res, next) => {
     try{
         const { title, type, category, ingredients, description, userId } = req.body;
+        console.log(req.user);
 
         const user = await User.findById(userId)
 
@@ -73,7 +77,6 @@ const deleteRecipe = async(req, res, next) => {
     }
 }
 
-
 const patchRecipe = async (req, res, next) => {
     try{
 
@@ -85,7 +88,7 @@ const patchRecipe = async (req, res, next) => {
             if(!updateRecipe) return next(setError(404, 'Receta no existe'))
             return res.status(200).json(updateRecipe)
     }catch(error){
-       return next(error) 
+        return next(error)
     }
 }
 

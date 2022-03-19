@@ -1,6 +1,6 @@
 const express = require('express');
-const dotenv = require('dotenv');
 const cors = require('cors');
+const dotenv = require('dotenv');
 
 const {connectDb} = require('./utils/db/db');
 const DB_URL = process.env.MONGO_DB_URL;
@@ -27,12 +27,19 @@ app.use(cors({
     credentials: true
 }))
 
+//transform data posted to json
+app.use(express.json());
+
+app.use(express.urlencoded({
+    extended: true,
+}));
+
 //usamos session. Configuramos sesion.
 //Es la cookie de sesion que se quedara activa el tiempo que le digamos
 //esta cookie la hemos obtenido del id en el serializer en index.strategy.js
 app.use(
     session({
-        secret:  process.env.SECRET_SESSION,
+        secret:  process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
         cookie: {
@@ -43,6 +50,7 @@ app.use(
     })
 )
 
+
 // Ainicializamos passport
 app.use(passport.initialize())
 //para que passport trabaje con sesiones
@@ -51,17 +59,6 @@ app.use(passport.session())
 connectDb();
 
 
-
-
-//transform data posted to json - limit 5MB
-app.use(express.json ({
-    limit:'5mb'
-}));
-
-app.use(express.urlencoded({
-    extended: true,
-    limit: '5mb'
-}));
 
 
 

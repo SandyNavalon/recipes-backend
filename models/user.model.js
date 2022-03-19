@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
@@ -9,9 +10,7 @@ const userSchema = new Schema(
     passwordVerification: {type: String},
     user: { type: String },
     recipes: [{ type: mongoose.Types.ObjectId, ref: 'recipes' }],
-    //lastName: { type: String, required: true }, 
-    //phoneNumber:{ type: String, required: true },
-    //....
+
   },
   {
     timestamps: true,

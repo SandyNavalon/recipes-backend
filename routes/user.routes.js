@@ -1,3 +1,4 @@
+
 const express = require('express');
 const passport = require('passport');
 const User = require('../models/user.model');
@@ -8,6 +9,7 @@ router.post('/register', (req, res, next) => {
     // console.log('req.body', req.body);
     // return res.status(200).json ('Endpoint/ register working');
     try{
+        console.log('prueba register', req.body);
         const done = (error, savedUser) => {
             if(error) {
                 return next(error);
@@ -71,7 +73,7 @@ router.get('/', async (req, res, next) => {
     try{
         const users = await User.find({}).populate('recipes')
         res.json(users);
-        
+
     }catch(error){
     return next(error)
     }
@@ -80,12 +82,12 @@ router.get('/', async (req, res, next) => {
 
 router.put('/add', async (req, res, next) => {
     try {
-        const { recipeId} = req.body;
+        const { recipeId } = req.body;
         const { userId } = req.body;
-        
+
         const updatedUser = await User.findByIdAndUpdate(
-            recipeId,
-            { $push: { users: userId } },
+            userId,
+            { $push: { recipes: recipeId } },
             { new: true }
         );
 

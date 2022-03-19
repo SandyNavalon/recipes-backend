@@ -10,14 +10,14 @@ cloudinary.config({
 })
 
 //hemos instalado multer para poder  npm install --save multer
-//que sirve para subir archivos a la web. 
-
+//que sirve para subir archivos a la web.
 
 const storage = multer.diskStorage({
     filename: (req, file, callback) => {
         //con esto te hace automatico el nombre del archivo. Date le pone la fecha de subida
         callback(null, `${Date.now()}-${file.originalname}`);
     },
+
     //a donde van las imagenes que subimos
     destination: (req, file, callback) => {
         //esta carpeta la hemos creado manualmente -->
@@ -60,7 +60,7 @@ const uploadToCloudinary = async (req, res, next) => {
 
         try{
             console.log('Subiendo a Cloudinary...');
-    
+
         const filePath = req.file.path;
         const imageFromCloudinary = await cloudinary.uploader.upload(filePath);
 

@@ -1,10 +1,11 @@
+
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
 
 // TODO: Refactor this function called by login and register strategy
-// 
+
 const validateEmail = (email) => {
     const re =
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -47,14 +48,13 @@ const loginStrategy = new LocalStrategy({
                 const error = new Error("Credenciales incorrectas");
                 return done(error);
             }
-         } 
+        }
         catch (error){
             return done(error);
 
         }
 
     }
-
 
 )
 

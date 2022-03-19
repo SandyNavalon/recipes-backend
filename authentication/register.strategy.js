@@ -1,3 +1,4 @@
+
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user.model');
@@ -16,8 +17,6 @@ const validatePassword = (password) => {
 
     return re.test(String(password));
 };
-
-
 
 
 // Estrategia de registro
@@ -80,6 +79,7 @@ const registerStrategy = new LocalStrategy({
 
             const savedUser = await newUser.save();
             return done(null, savedUser);
+
         } catch (error) {
             done(error, null)
         }
