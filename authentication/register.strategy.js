@@ -19,8 +19,6 @@ const validatePassword = (password) => {
 };
 
 
-
-
 // Estrategia de registro
 const registerStrategy = new LocalStrategy({
         usernameField: 'email',
@@ -81,6 +79,7 @@ const registerStrategy = new LocalStrategy({
 
             const savedUser = await newUser.save();
             return done(null, savedUser);
+
         } catch (error) {
             done(error, null)
         }
