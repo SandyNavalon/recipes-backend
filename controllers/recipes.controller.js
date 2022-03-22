@@ -1,5 +1,4 @@
 
-const { ObjectId } = require('mongodb');
 const {setError} = require('../config/errors/error');
 
 const Recipe = require("../models/recipes.model");
@@ -37,7 +36,7 @@ const getRecipe = async (req, res, next) => {
 const postRecipe = async (req, res, next) => {
     try{
         const { title, type, category, ingredients, description, userId, comments } = req.body;
-        console.log(req.user);
+        console.log(userId);
 
         const user = await User.findById(userId)
         const comment = await Comment.findById(comments)
@@ -52,11 +51,12 @@ const postRecipe = async (req, res, next) => {
             category,
             ingredients,
             description,
-            userId: user._id,
+            userId: userId,
             comments: []
         })
-        // newRecipe.userId = user._id;
-        console.log(newRecipe.userId);
+
+        newRecipe.userId = userId;
+        // console.log(newRecipe.userId);
 
         newRecipe.img = recipeImg;
 
