@@ -7,7 +7,7 @@ const Comment = require("../models/comments.model")
 
 const getAllRecipes = async (req, res, next) => {
     try {
-        console.log('req.user', req.user);
+        // console.log('req.user', req.user);
 
         const allRecipes = await Recipe.find();
         return res.status(200).json(allRecipes);
@@ -18,7 +18,7 @@ const getAllRecipes = async (req, res, next) => {
 
 const getRecipe = async (req, res, next) => {
     try {
-        console.log('req.user', req.user);
+        // console.log('req.user', req.user);
 
         const {id} = req.params;
         const recipe = await Recipe.findById(id)
@@ -36,23 +36,28 @@ const getRecipe = async (req, res, next) => {
 const postRecipe = async (req, res, next) => {
     try{
         const { title, type, category, ingredients, description, userId, comments } = req.body;
-        console.log(req.user);
+        console.log(userId);
 
         const user = await User.findById(userId)
         const comment = await Comment.findById(comments)
 
         const recipeImg = req.recipeImgFromCloudinary ? req.recipeImgFromCloudinary : null;
 
-        console.log('imgfromcloudinary', req.recipeImgFromCloudinary);
+        // console.log('imgfromcloudinary', req.recipeImgFromCloudinary);
+
         const newRecipe = new Recipe({
             title,
             type,
             category,
             ingredients,
             description,
-            userId: user._id,
+            userId: userId,
             comments: []
         })
+
+        newRecipe.userId = userId;
+        // console.log(newRecipe.userId);
+
         newRecipe.img = recipeImg;
 
         const recipeInDB = await newRecipe.save()
