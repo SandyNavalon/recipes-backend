@@ -13,7 +13,9 @@ const recipes = [
         category: 'american',
         ingredients: ['cacao', 'harina de avena', 'azúcar de coco', 'levadura', 'huevo', 'leche', 'nueces', 'aceite'],
         description:'lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum',
-        img:'https://a.storyblok.com/f/120479/305ae468ee/muffins-de-chocolate-1.jpg'
+        img:'https://a.storyblok.com/f/120479/305ae468ee/muffins-de-chocolate-1.jpg',
+        userId : '6238e1944551e2596b9d545d',
+        //comments : []
     },
     {
         title: 'Risotto',
@@ -21,7 +23,9 @@ const recipes = [
         category: 'italian',
         ingredients: ['arroz', 'setas', 'vino', 'cebolla', 'esparrago', 'queso', 'trufa', 'caldo'],
         description:'lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum',
-        img:'https://www.palancares.com/wp-content/uploads/2020/09/RISOTTO-DE-SETAS.jpg'
+        img:'https://www.palancares.com/wp-content/uploads/2020/09/RISOTTO-DE-SETAS.jpg',
+        userId : '6238e1944551e2596b9d545d',
+        //comments : []
     }
 ];
 
