@@ -10,7 +10,8 @@ const userSchema = new Schema(
     passwordVerification: {type: String},
     user: { type: String },
     recipes: [{ type: mongoose.Types.ObjectId, ref: 'recipes' }],
-
+    comments : [{ type: mongoose.Types.ObjectId, ref: 'comments', default:[]}]
+    //recipesFavorites : [{ type: mongoose.Types.ObjectId, ref: 'recipes'}]
   },
   {
     timestamps: true,

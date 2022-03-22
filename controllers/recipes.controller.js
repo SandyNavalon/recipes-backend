@@ -3,6 +3,7 @@ const {setError} = require('../config/errors/error');
 
 const Recipe = require("../models/recipes.model");
 const User = require("../models/user.model");
+const Comment = require("../models/comments.model")
 
 const getAllRecipes = async (req, res, next) => {
     try {
@@ -34,10 +35,11 @@ const getRecipe = async (req, res, next) => {
 
 const postRecipe = async (req, res, next) => {
     try{
-        const { title, type, category, ingredients, description, userId } = req.body;
+        const { title, type, category, ingredients, description, userId, comments } = req.body;
         console.log(req.user);
 
         const user = await User.findById(userId)
+        const comment = await Comment.findById(comments)
 
         const recipeImg = req.recipeImgFromCloudinary ? req.recipeImgFromCloudinary : null;
 
@@ -49,6 +51,7 @@ const postRecipe = async (req, res, next) => {
             ingredients,
             description,
             userId: user._id,
+            comments: []
         })
         newRecipe.img = recipeImg;
 
@@ -56,6 +59,9 @@ const postRecipe = async (req, res, next) => {
 
         user.recipes = user.recipes.concat(recipeInDB._id)
         await user.save()
+
+        //comment.recipes = comment.recipes.concat(recipeInDB._id)
+        //await comment.save()
 
         return res.status(201).json(recipeInDB)
 
@@ -79,14 +85,14 @@ const deleteRecipe = async(req, res, next) => {
 
 const patchRecipe = async (req, res, next) => {
     try{
+        const {id}=req.params
+        const patchRecipe = new Recipe(req.body)
+        patchRecipe._id = id
 
-            const {id}=req.params
-            const patchRecipe = new Recipe(req.body)
-            patchRecipe._id = id
+        const updateRecipe = await Recipe.findByIdAndUpdate(id, patchRecipe)
+        if(!updateRecipe) return next(setError(404, 'Receta no existe'))
+        return res.status(200).json(updateRecipe)
 
-            const updateRecipe = await Recipe.findByIdAndUpdate(id, patchRecipe)
-            if(!updateRecipe) return next(setError(404, 'Receta no existe'))
-            return res.status(200).json(updateRecipe)
     }catch(error){
         return next(error)
     }
