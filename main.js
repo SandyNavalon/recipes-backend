@@ -10,8 +10,6 @@ dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-
-
 const userRouter = require('./routes/user.routes');
 const RecipesRoutes = require('./routes/recipes.routes')
 const passport = require('passport');
@@ -57,10 +55,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 connectDb();
-
-
-
-
 
 app.use('/recipes', RecipesRoutes)
 app.use('/user', userRouter);

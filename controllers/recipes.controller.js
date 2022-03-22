@@ -1,4 +1,5 @@
 
+const { ObjectId } = require('mongodb');
 const {setError} = require('../config/errors/error');
 
 const Recipe = require("../models/recipes.model");
@@ -6,7 +7,7 @@ const User = require("../models/user.model");
 
 const getAllRecipes = async (req, res, next) => {
     try {
-        console.log('req.user', req.user);
+        // console.log('req.user', req.user);
 
         const allRecipes = await Recipe.find();
         return res.status(200).json(allRecipes);
@@ -17,7 +18,7 @@ const getAllRecipes = async (req, res, next) => {
 
 const getRecipe = async (req, res, next) => {
     try {
-        console.log('req.user', req.user);
+        // console.log('req.user', req.user);
 
         const {id} = req.params;
         const recipe = await Recipe.findById(id)
@@ -34,14 +35,17 @@ const getRecipe = async (req, res, next) => {
 
 const postRecipe = async (req, res, next) => {
     try{
-        const { title, type, category, ingredients, description, userId } = req.body;
+        const { title, type, category, ingredients, description} = req.body;
+        // const userId = req.user._id;
+
         console.log(req.user);
 
-        const user = await User.findById(userId)
+        const user = await User.findOne(req.user._id)
 
         const recipeImg = req.recipeImgFromCloudinary ? req.recipeImgFromCloudinary : null;
 
-        console.log('imgfromcloudinary', req.recipeImgFromCloudinary);
+        // console.log('imgfromcloudinary', req.recipeImgFromCloudinary);
+
         const newRecipe = new Recipe({
             title,
             type,
@@ -50,6 +54,9 @@ const postRecipe = async (req, res, next) => {
             description,
             userId: user._id,
         })
+        // newRecipe.userId = user._id;
+        console.log(newRecipe.userId);
+
         newRecipe.img = recipeImg;
 
         const recipeInDB = await newRecipe.save()
