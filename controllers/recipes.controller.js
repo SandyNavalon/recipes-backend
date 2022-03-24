@@ -103,10 +103,27 @@ const patchRecipe = async (req, res, next) => {
     }
 }
 
+const getRecipeByUser = async (req, res, next) => {
+    try {
+        
+        const recipes = await Recipe.find({
+            userId:req.params.id
+        });
+            console.log('recipes controller', recipes);
+        // if(!comment){
+        //     return next(setError (404, 'Comment does not exist'))
+        // }
+        return res.status(200).json(recipes)
+
+    } catch(error) {
+        return next(error);
+    }
+}
 module.exports = {
     getAllRecipes,
     getRecipe,
     postRecipe,
     deleteRecipe,
-    patchRecipe
+    patchRecipe,
+    getRecipeByUser,
 };
