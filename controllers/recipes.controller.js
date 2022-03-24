@@ -8,8 +8,8 @@ const Comment = require("../models/comments.model")
 const getAllRecipes = async (req, res, next) => {
     try {
         // console.log('req.user', req.user);
-
         const allRecipes = await Recipe.find();
+
         return res.status(200).json(allRecipes);
     } catch(error) {
         return next(error);
@@ -36,7 +36,7 @@ const getRecipe = async (req, res, next) => {
 const postRecipe = async (req, res, next) => {
     try{
         const { title, type, category, ingredients, description, userId, comments } = req.body;
-        console.log(userId);
+        // console.log(userId);
 
         const user = await User.findById(userId)
         const comment = await Comment.findById(comments)
