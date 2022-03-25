@@ -39,7 +39,7 @@ const postRecipe = async (req, res, next) => {
         // console.log(userId);
 
         const user = await User.findById(userId)
-        const comment = await Comment.findById(comments)
+        // const comment = await Comment.findById(comments)
 
         const recipeImg = req.recipeImgFromCloudinary ? req.recipeImgFromCloudinary : null;
 
@@ -49,7 +49,7 @@ const postRecipe = async (req, res, next) => {
             title,
             type,
             category,
-            ingredients,
+            ingredients: ingredients.split(','),
             description,
             userId: userId,
             comments: []
