@@ -33,7 +33,6 @@ router.post('/register', (req, res, next) => {
 router.post('/login', (req, res, next) => {
     try {
         const done = (error, user) => {
-            user.populate('recipes');
             console.log(user);
             if(error) {
                 return next(error);
