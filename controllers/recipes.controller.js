@@ -24,7 +24,7 @@ const getRecipe = async (req, res, next) => {
         const recipe = await Recipe.findById(id)
 
         if(!recipe){
-            return next(setError (404, 'Recipe does not exist'))
+            return next(setError (404, 'La receta no existe'))
         }
         return res.status(200).json(recipe)
 
@@ -80,7 +80,7 @@ const deleteRecipe = async(req, res, next) => {
         const {id} = req.params
         const recipeDeleted = await Recipe.findByIdAndDelete(id)
 
-        if(!recipeDeleted) return next(setError(404, 'Recipe does not exist'))
+        if(!recipeDeleted) return next(setError(404, 'La receta no existe'))
         return res.status(200).json(recipeDeleted)
 
     } catch(err){
@@ -95,7 +95,7 @@ const patchRecipe = async (req, res, next) => {
         patchRecipe._id = id
 
         const updateRecipe = await Recipe.findByIdAndUpdate(id, patchRecipe)
-        if(!updateRecipe) return next(setError(404, 'Receta no existe'))
+        if(!updateRecipe) return next(setError(404, 'La receta no existe'))
         return res.status(200).json(updateRecipe)
 
     }catch(error){
