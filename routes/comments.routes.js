@@ -10,7 +10,7 @@ router.get("/:id", getComment)
 router.post('/create', postComment)
 
 //el patch busca y modifica
-router.patch('/:id', updateComment)
+router.put('/:id', updateComment)
 router.delete('/:id', deleteComment)
 
 module.exports = router;
