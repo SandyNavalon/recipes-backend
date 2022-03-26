@@ -31,7 +31,8 @@ const loginStrategy = new LocalStrategy({
             //validate email
             const user = await User.findOne({
                 email: email
-            });
+            }).populate('recipes');
+        
 
             if (!user) {
                 const error = new Error("Credenciales incorrectas");
