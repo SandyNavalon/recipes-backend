@@ -88,13 +88,13 @@ const deleteRecipe = async(req, res, next) => {
     }
 }
 
-const patchRecipe = async (req, res, next) => {
+const putRecipe = async (req, res, next) => {
     try{
         const {id}=req.params
-        const patchRecipe = new Recipe(req.body)
-        patchRecipe._id = id
+        const putRecipe = new Recipe(req.body)
+        putRecipe._id = id
 
-        const updateRecipe = await Recipe.findByIdAndUpdate(id, patchRecipe)
+        const updateRecipe = await Recipe.findByIdAndUpdate(id, putRecipe)
         if(!updateRecipe) return next(setError(404, 'La receta no existe'))
         return res.status(200).json(updateRecipe)
 
@@ -124,6 +124,6 @@ module.exports = {
     getRecipe,
     postRecipe,
     deleteRecipe,
-    patchRecipe,
+    putRecipe,
     getRecipeByUser,
 };

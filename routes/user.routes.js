@@ -26,7 +26,7 @@ router.post('/register', (req, res, next) => {
         passport.authenticate('register', done)(req);
 
     } catch(error){
-        console.log('ERROR!!', error);
+        console.log('¡¡ERROR!!', error);
     }
 });
 

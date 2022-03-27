@@ -21,7 +21,8 @@ const validatePassword = (password) => {
 
 // Estrategia de registro
 const registerStrategy = new LocalStrategy({
-        usernameField: 'email',
+        emailField: 'email',
+        usernameField: 'username',
         passwordField: 'password',
         passReqToCallback: true,
     },
@@ -32,7 +33,6 @@ const registerStrategy = new LocalStrategy({
             email: email
         });
         try {
-
             //validation password
             const {
                 user,
@@ -74,7 +74,7 @@ const registerStrategy = new LocalStrategy({
             const newUser = new User({
                 email: email,
                 password: hash,
-                user: user,
+                username: username,
             })
 
             const savedUser = await newUser.save();

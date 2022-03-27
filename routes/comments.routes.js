@@ -9,8 +9,8 @@ router.get("/", getAllComments);
 router.get("/:id", getComment)
 router.post('/create', postComment)
 
-//el patch busca y modifica
-router.patch('/:id', updateComment)
+//el put busca y modifica
+router.put('/:id', updateComment)
 router.delete('/:id', deleteComment)
 
 module.exports = router;
