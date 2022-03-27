@@ -99,4 +99,20 @@ router.put('/add', async (req, res, next) => {
     }
 });
 
+router.get('/:id', async (req, res, next) => {
+    try {
+        // console.log('req.user', req.user);
+        const {id} = req.params;
+        const user = await User.findById(id)
+
+        if(!user){
+            return next(setError (404, 'User does not exist'))
+        }
+        return res.status(200).json(user)
+
+    } catch(error) {
+        return next(error);
+    }
+})
+
 module.exports= router;

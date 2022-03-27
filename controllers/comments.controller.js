@@ -38,14 +38,14 @@ const postComment = async (req, res, next) => {
         console.log(req.body);
 
         const recipe = await Recipe.findById(recipeId)
-        const user = await User.findById(req.user._id)
+        const user = await User.findById(userId)
         //console.log(recipe);
         console.log(req.user);
 
         const newComment = new Comment({
             content,
-            recipeId: recipe._id,
-            userId: user._id
+            recipeId: recipeId,
+            userId: userId
         })
 
         const commentInDB = await newComment.save()
