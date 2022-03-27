@@ -105,7 +105,6 @@ const putRecipe = async (req, res, next) => {
 
 const getRecipeByUser = async (req, res, next) => {
     try {
-
         const recipes = await Recipe.find({
             userId:req.params.id
         });
@@ -118,12 +117,14 @@ const getRecipeByUser = async (req, res, next) => {
     } catch(error) {
         return next(error);
     }
+
 }
+
 module.exports = {
     getAllRecipes,
     getRecipe,
+    getRecipeByUser,
     postRecipe,
     deleteRecipe,
-    putRecipe,
-    getRecipeByUser,
+    putRecipe
 };
