@@ -8,8 +8,8 @@ const Comment = require("../models/comments.model")
 const getAllRecipes = async (req, res, next) => {
     try {
         // console.log('req.user', req.user);
-
         const allRecipes = await Recipe.find();
+
         return res.status(200).json(allRecipes);
     } catch(error) {
         return next(error);
@@ -24,7 +24,7 @@ const getRecipe = async (req, res, next) => {
         const recipe = await Recipe.findById(id)
 
         if(!recipe){
-            return next(setError (404, 'Recipe does not exist'))
+            return next(setError (404, 'La receta no existe'))
         }
         return res.status(200).json(recipe)
 
@@ -39,7 +39,7 @@ const postRecipe = async (req, res, next) => {
         //console.log(userId);
 
         const user = await User.findById(userId)
-        const comment = await Comment.findById(comments)
+        // const comment = await Comment.findById(comments)
 
         const recipeImg = req.recipeImgFromCloudinary ? req.recipeImgFromCloudinary : null;
 
@@ -80,7 +80,7 @@ const deleteRecipe = async(req, res, next) => {
         const {id} = req.params
         const recipeDeleted = await Recipe.findByIdAndDelete(id)
 
-        if(!recipeDeleted) return next(setError(404, 'Recipe does not exist'))
+        if(!recipeDeleted) return next(setError(404, 'La receta no existe'))
         return res.status(200).json(recipeDeleted)
 
     } catch(err){

@@ -6,8 +6,10 @@ const {getAllRecipes, getRecipe, getRecipeByUser, postRecipe, deleteRecipe, putR
 
 router.post('/create',[upload.single('img'), uploadToCloudinary],  postRecipe)
 router.get('/', getAllRecipes)
+router.get('/myRecipes/:id', getRecipeByUser )
 router.get('/:id', getRecipe)
 router.get('/myRecipes/:id', getRecipeByUser )
+
 
 //el patch busca y modifica
 router.put('/edit/:id', putRecipe)
