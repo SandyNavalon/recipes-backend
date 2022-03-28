@@ -91,10 +91,26 @@ const updateComment = async (req, res, next) => {
     }
 }
 
+//Devuelve todos los comentarios asociados al id de receta
+const getCommentsByRecipe = async (req, res, next) => {
+    try {
+        const comments = await Comment.find({
+            recipeId:req.params.id
+        });
+            console.log('comments controller', comments);
+
+        return res.status(200).json(comments)
+
+    } catch(error) {
+        return next(error);
+    }
+}
+
 module.exports = {
     getAllComments,
     getComment,
     postComment,
     deleteComment,
-    updateComment
+    updateComment,
+    getCommentsByRecipe,
 };
