@@ -38,14 +38,14 @@ const postComment = async (req, res, next) => {
         console.log(req.body);
 
         const recipe = await Recipe.findById(recipeId)
-        const user = await User.findById(req.user._id)
+        const user = await User.findById(userId)
         //console.log(recipe);
         console.log(req.user);
 
         const newComment = new Comment({
             content,
-            recipeId: recipe._id,
-            userId: user._id
+            recipeId: recipeId,
+            userId: userId
         })
 
         const commentInDB = await newComment.save()
@@ -91,10 +91,26 @@ const updateComment = async (req, res, next) => {
     }
 }
 
+//Devuelve todos los comentarios asociados al id de receta
+const getCommentsByRecipe = async (req, res, next) => {
+    try {
+        const comments = await Comment.find({
+            recipeId:req.params.id
+        });
+            console.log('comments controller', comments);
+
+        return res.status(200).json(comments)
+
+    } catch(error) {
+        return next(error);
+    }
+}
+
 module.exports = {
     getAllComments,
     getComment,
     postComment,
     deleteComment,
-    updateComment
+    updateComment,
+    getCommentsByRecipe,
 };
