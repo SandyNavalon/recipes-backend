@@ -10,7 +10,7 @@ router.get('/:id', getRecipe)
 router.get('/myRecipes/:id', getRecipeByUser )
 
 //el patch busca y modifica
-router.put('/:id', putRecipe)
+router.put('/edit/:id', putRecipe)
 router.delete('/:id', deleteRecipe)
 
 
